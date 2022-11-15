@@ -1,0 +1,10 @@
+README.md
+setup.py
+api/__init__.py
+models/__init__.py
+models/base_person.py
+tests/__init__.py
+wezygo.egg-info/PKG-INFO
+wezygo.egg-info/SOURCES.txt
+wezygo.egg-info/dependency_links.txt
+wezygo.egg-info/top_level.txt
