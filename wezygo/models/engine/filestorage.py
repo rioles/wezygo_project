@@ -1,7 +1,8 @@
 #!/usr/bin/python3
 import json
-from models.base_person import BasePerson
 from datetime import datetime
+from models.base_person import BasePerson
+import os
 
 class FileStorage:
     __file_path = 'file.json'
@@ -41,24 +42,7 @@ class FileStorage:
         
 
 
-if __name__=="__main__":
-    my_model = BasePerson()
-    my_model.first_name = "remi"
-    my_model.surname = "jake"
-    my_model.id_card_url = "url"
-    my_model.birthday = datetime(1990, 11, 28, 23, 55, 59, 342380)
-    print(my_model)
-    #my_model.save()
-    print(my_model)
-    print(type(my_model.created_at))
-    print("--")
-    my_model_json = my_model.to_dict()
-    print(my_model_json)
-    print("JSON of my_model:")
-    p = FileStorage()
-    p.new(my_model)
-    print(p.save())
-    print(p.reload())
+
 
 
 
