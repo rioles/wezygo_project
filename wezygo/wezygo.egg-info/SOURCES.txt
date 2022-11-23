@@ -3,7 +3,14 @@ setup.py
 api/__init__.py
 models/__init__.py
 models/base_person.py
+models/geolocation.py
+models/merchandise.py
+models/merchant.py
+models/test.py
+models/truck.py
+models/truck_owner.py
 tests/__init__.py
+tests/test_reload.py
 wezygo.egg-info/PKG-INFO
 wezygo.egg-info/SOURCES.txt
 wezygo.egg-info/dependency_links.txt
