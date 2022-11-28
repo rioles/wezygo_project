@@ -14,7 +14,7 @@ class Merchant(BasePerson, Base):
     surn_name = Column(String(128), nullable=False)
     birthday = Column(DateTime, default=datetime.datetime.utcnow)
     merchandises = relationship("Merchandises", backref="Merchant", cascade="delete")
-    geolocation_id = Column(String(60), ForeignKey("geolocation.id"), nullable=False)
+    geolocation_id = Column(String(60), ForeignKey("geolocation.id"), nullable=True)
 
 
     @property

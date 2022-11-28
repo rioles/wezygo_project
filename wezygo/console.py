@@ -9,17 +9,18 @@ from models.merchandise import Merchandises
 from models.merchant import Merchant
 from models.truck import Truck
 from models.truck_owner import TruckOwner
+from util import ManageGeocoordinate
 class WezygoShell(cmd.Cmd):
     intro = 'Welcome to wezygo our plateform to match merchant to transporter.   Type help or ? to list commands.\n'
     prompt = '(wezygo) '
 
     __classes = {
-    BasePerson,
-    Geolocation,
-    Merchandises,
-    Merchant,
-    Truck,
-    TruckOwner
+    "BasePerson",
+    "Geolocation",
+    "Merchandises",
+    "Merchant",
+    "Truck",
+    "TruckOwner"
     }
 
     __att_person = {
@@ -118,7 +119,22 @@ class WezygoShell(cmd.Cmd):
         else:
             print("** no instance found **")
 
-        
+    def do_genaretecoordinate(self, args):
+        """
+        genarate a random coordinate
+        """
+        print(ManageGeocoordinate.genarate_rando_coordinate())
+
+    def do_find_nearcab(self, args):
+        """
+        find near cab for given coordinate ([lat, long])
+        """
+        lat_long_arr = args.split()
+        lat_long_arr_flot = []
+        for element in lat_long_arr:
+            lat_long_arr_flot.append(eval(element))
+        print(ManageGeocoordinate.closet_element(lat_long_arr_flot))
+        print(lat_long_arr)
 
     def do_EOF(self, args):
         """end_of_file"""
