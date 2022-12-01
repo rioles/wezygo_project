@@ -14,4 +14,5 @@ class Merchandises(BasePerson, Base):
     capacity = Column(Float, nullable=True)
 
     merchant_id = Column(String(60), ForeignKey("merchants.id"), nullable=False)
+    geolocation_id = Column(String(60), ForeignKey("geolocation.id"), nullable=True)
 

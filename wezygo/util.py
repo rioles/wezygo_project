@@ -21,6 +21,10 @@ class ManageGeocoordinate:
         return coordinates
 
     @staticmethod
+    def encode_coordinate(arr):
+        return pgh.encode(arr[0],arr[1])
+
+    @staticmethod
     def genarate_has():
         coordinate_with_hash = {}
         for element in ManageGeocoordinate.reload():

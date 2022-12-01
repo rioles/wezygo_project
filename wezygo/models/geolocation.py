@@ -13,27 +13,27 @@ class Geolocation(BasePerson, Base):
     latitude = Column(Float, nullable=True)
     longitude = Column(Float, nullable=True)
     coordinate_of = Column(String(128), nullable=False)
-    merchants = relationship("Merchant", backref="Geolocation", cascade="delete")
-    truck_owners = relationship("TruckOwner", backref="Geolocation", cascade="delete")
+    merchandises = relationship("Merchandises", backref="Geolocation", cascade="delete")
+    trucks = relationship("Truck", backref="Geolocation", cascade="delete")
     #truck_owner = relationship("TruckOwner", backref="Geolocation", cascade="delete")
 
     @property
-    def truck_owners(self):
-        truck_owners_dict = models.storage.all(models.classes["TruckOwner"])
-        truck_owners_list = []
+    def trucks(self):
+        trucks = models.storage.all(models.classes["Truck"])
+        truck_list = []
 
-        for key, value in truck_owners_dict.items():
+        for key, value in trucks.items():
             if value.geocoordinate_id == self.id:
-                truck_owners_list.append(value)
-        return truck_owners_list
+                truck_list.append(value)
+        return truck_list
     
 
     @property
     def merchants(self):
-        merchants_dict = models.storage.all(models.classes["Merchant"])
-        merchants_list = []
+        merchandises_dict = models.storage.all(models.classes["Marchandises"])
+        merchandises_list = []
 
-        for key, value in merchants_dict.items():
+        for key, value in merchandises_dict.items():
             if value.geocoordinate_id == self.id:
-                merchants_list.append(value)
-        return merchants_list
+                merchandises_list.append(value)
+        return merchandises_list

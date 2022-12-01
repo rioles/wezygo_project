@@ -6,12 +6,17 @@ from models.base_person import Base
 from models.geolocation import Geolocation
 from models.merchandise import Merchandises
 from models.merchant import Merchant
+from models.truck_merchandise import TruckMerchandise
 from models.truck import Truck
 from models.truck_owner import TruckOwner
 from sqlalchemy import create_engine
 from sqlalchemy.orm import relationship
 from sqlalchemy.orm import scoped_session
 from sqlalchemy.orm import sessionmaker
+classes = {"Merchant": Merchant, "TruckOwner": TruckOwner,
+           "Merchandises": Merchandises, "Geolocation": Geolocation, "Truck": Truck, "TruckMerchandise": TruckMerchandise}
+
+
 class DBStorage:
     """Represents a database storage engine.
      Attributes:
@@ -30,17 +35,28 @@ class DBStorage:
                                       pool_pre_ping=True)
           
     def all(self, cls=None):
+        all_objects = {}
         if cls is None:
-            objs = self.__session.query(TruckOwner).all()
-            objs.extend(self.__session.query(Truck).all())
-            objs.extend(self.__session.query(Merchant).all())
-            objs.extend(self.__session.query(Merchandises).all())
-            objs.extend(self.__session.query(Geolocation).all())
+            for clss in classes.values():
+                objs = self.__session.query(clss).all()
+                for obj in objs:
+                    key_c = obj.__class__.__name__ + '.' + obj.id
+                    all_objects[key_c] = obj
+            #objs = self.__session.query(TruckOwner).all()
+            #objs.extend(self.__session.query(Truck).all())
+            #objs.extend(self.__session.query(Merchant).all())
+            #objs.extend(self.__session.query(Merchandises).all())
+            #objs.extend(self.__session.query(Geolocation).all())
         else:
-            if type(cls) == str:
+            if type(cls) == str and cls in classes:
                 cls = eval(cls)
-            objs = self.__session.query(cls)
-        return objs
+                #print(cls)
+            objs = self.__session.query(cls).all()
+            for obj in objs:
+                key_c = obj.__class__.__name__ + '.' + obj.id
+                all_objects[key_c] = obj
+
+        return all_objects
     
     def new(self, obj):
         """Add obj to the current database session."""
@@ -54,6 +70,21 @@ class DBStorage:
         """Delete obj from the current database session."""
         if obj is not None:
             self.__session.delete(obj)
+    
+    def get(self, cls, id):
+        """
+        Returns the object based on the class name and its ID, or
+        None if not found
+        """
+        if cls not in classes.values():
+            return None
+
+        all_cls = self.all(cls)
+        for value in all_cls.values():
+            if (value.id == id):
+                return value
+
+        return None
 
     def reload(self):
         """Create all tables in the database and initialize a new session."""
