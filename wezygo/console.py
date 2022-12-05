@@ -9,6 +9,7 @@ from models.merchandise import Merchandises
 from models.merchant import Merchant
 from models.truck import Truck
 from models.truck_owner import TruckOwner
+from models.truck_merchandise import TruckMerchandise
 from util import ManageGeocoordinate
 from os import getenv
 class WezygoShell(cmd.Cmd):
@@ -148,14 +149,15 @@ class WezygoShell(cmd.Cmd):
         """
         my_list = args.split(" ")
         kwargs = {}
-        for i in range(1, len(my_list)):
-            print(my_list[i])
+        for i in range(0, len(my_list)):
+            #print(my_list[i])
             try:
                 key, value = tuple(my_list[i].split("="))
                 kwargs[key] = value
             except (SyntaxError,ValueError):
                 print("** SynthaxeError **")
                 return
+        print(kwargs)
 
         geohash_ids = {}
         merchandise_dic = {}
@@ -165,6 +167,7 @@ class WezygoShell(cmd.Cmd):
         geocoordinate_truck = {}
         for element in kwargs:
             value = kwargs[element]
+            print(element)
             try:
                 key, v = tuple(element.split("_"))
                 if key not in WezygoShell.__match_classes:
@@ -177,13 +180,34 @@ class WezygoShell(cmd.Cmd):
             except (SyntaxError,ValueError):
                 print("** SynthaxError **")
                 return
-
+        #print(truck_merchandises)
         if len(geohash_ids) < 1:
             print("** classe Merchandises or Truck miss **")
             return
         else:
             location_data = (geocoordinate_merchant,geocoordinate_truck)
             self.update_tripe_data(geohash_ids, truck_merchandises,location_data)
+
+            geocoordinate_truck['id'] = str(uuid4())
+            geocoordinate_merchant['id'] = str(uuid4())
+
+            geocoordinate_merchant_obj = Geolocation(**geocoordinate_merchant)
+            geocoordinate_truck_obj = Geolocation(**geocoordinate_truck)
+            truck_merchandise_obj= TruckMerchandise(**truck_merchandises)
+
+            storage.new(geocoordinate_merchant_obj)
+            storage.new(geocoordinate_truck_obj)
+            storage.new(truck_merchandise_obj)
+            geocoordinate_merchant_id = geocoordinate_merchant_obj.id
+            geocoordinate_truck_id = geocoordinate_truck_obj.id
+            geocoordinate_merchant_obj.save()
+            geocoordinate_truck_obj.save()
+            truck_merchandise_obj.save()
+
+            storage.update(Merchandises,merchandise_dic['merchandise_id'],geocoordinate_merchant_id)
+            storage.update(Truck,truck_dic['truck_id'],geocoordinate_truck_id)
+            print(geocoordinate_truck_obj)
+            print(truck_dic)
             print(truck_merchandises)
             
 

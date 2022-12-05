@@ -13,7 +13,7 @@ class TruckOwner(BasePerson, Base):
     surn_name = Column(String(128), nullable=False)
     birthday = Column(DateTime, default=datetime.datetime.utcnow)
     trucks = relationship("Truck", backref="TruckOwner", cascade="delete")
-    geolocation_id = Column(String(60), ForeignKey("geolocation.id"), nullable=True)
+    #geolocation_id = Column(String(60), ForeignKey("geolocation.id"), nullable=True)
 
     @property
     def trucks(self):

@@ -42,11 +42,6 @@ class DBStorage:
                 for obj in objs:
                     key_c = obj.__class__.__name__ + '.' + obj.id
                     all_objects[key_c] = obj
-            #objs = self.__session.query(TruckOwner).all()
-            #objs.extend(self.__session.query(Truck).all())
-            #objs.extend(self.__session.query(Merchant).all())
-            #objs.extend(self.__session.query(Merchandises).all())
-            #objs.extend(self.__session.query(Geolocation).all())
         else:
             if type(cls) == str and cls in classes:
                 cls = eval(cls)
@@ -61,6 +56,15 @@ class DBStorage:
     def new(self, obj):
         """Add obj to the current database session."""
         self.__session.add(obj)
+
+    def update(self, obj):
+        cls = obj.__class__.name
+        self.__session.query(cls).filter_by(id=obj.id).update({column: getattr(obj, column) for column in cls.__table__.columns.keys()})
+       
+    def update(self, cls, id_object, id_geolocation):
+        self.__session.query(cls).filter_by(id=id_object).update({"geolocation_id": id_geolocation})
+        self.save()
+
 
     def save(self):
         """Commit all changes to the current database session."""
