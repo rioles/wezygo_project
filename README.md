@@ -8,7 +8,7 @@ We empower merchants to find the right way (truck and route) to transport their 
 ### Dependencies
 + no library is required except setuptools for package management
 ### Installing
-clone this [repository] (https://github.com/rioles/wezygo_project)
+clone this [repository](https://github.com/rioles/wezygo_project)
 once done, install setuptools in your local computer
 
 ### Executing program
