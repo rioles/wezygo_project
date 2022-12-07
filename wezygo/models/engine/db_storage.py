@@ -61,8 +61,8 @@ class DBStorage:
         cls = obj.__class__.name
         self.__session.query(cls).filter_by(id=obj.id).update({column: getattr(obj, column) for column in cls.__table__.columns.keys()})
        
-    def update(self, cls, id_object, id_geolocation):
-        self.__session.query(cls).filter_by(id=id_object).update({"geolocation_id": id_geolocation})
+    def update(self, cls, id_object, id):
+        self.__session.query(cls).filter_by(id=id_object).update({"geolocation_id": id})
         self.save()
 
 
